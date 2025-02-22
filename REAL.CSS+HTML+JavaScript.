@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Real</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=UnifrakturMaguntia&display=swap');
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+        .real-text {
+            position: absolute;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.2s ease, opacity 1s ease;
+            opacity: 1;
+            animation: glitch 0.1s infinite;
+        }
+
+        .big-real {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 100px;
+            color: red;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 3s ease-in-out;
+            font-family: 'UnifrakturMaguntia', cursive;
+        }
+
+        .blood-drop {
+            position: absolute;
+            width: 5px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            top: -10px;
+            opacity: 0.8;
+            animation: bloodFall 5s linear infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes bloodFall {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <iframe width="0" height="0" src="https://www.youtube.com/embed/cHYlSDwVzW8?autoplay=1&loop=1&playlist=cHYlSDwVzW8" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+    
+    <script>
+        let count = 0;
+        function spawnReal() {
+            let real = document.createElement("div");
+            real.className = "real-text";
+            real.innerText = "Real";
+            document.body.appendChild(real);
+            
+            let x = Math.random() * window.innerWidth;
+            let y = Math.random() * window.innerHeight;
+            real.style.left = `${x}px`;
+            real.style.top = `${y}px`;
+            
+            let redIntensity = Math.min(255, count * 5);
+            let angle = Math.random() * count * 2;
+            let scale = 1 + count * 0.02;
+            
+            real.style.color = `rgb(${redIntensity}, 0, 0)`;
+            real.style.transform = `rotate(${angle}deg) scale(${scale})`;
+            
+            count++;
+            setTimeout(() => {
+                real.style.opacity = 0;
+                setTimeout(() => document.body.removeChild(real), 1000);
+            }, 3000);
+            
+            setTimeout(spawnReal, 500);
+        }
+        spawnReal();
+        
+        setTimeout(() => {
+            let bigReal = document.createElement("div");
+            bigReal.className = "big-real";
+            bigReal.innerText = "Real";
+            document.body.appendChild(bigReal);
+            
+            setTimeout(() => {
+                bigReal.style.opacity = 1;
+                startBloodEffect();
+            }, 100);
+        }, 10000);
+
+        function startBloodEffect() {
+            setInterval(() => {
+                let blood = document.createElement("div");
+                blood.className = "blood-drop";
+                blood.style.left = `${Math.random() * window.innerWidth}px`;
+                document.body.appendChild(blood);
+                setTimeout(() => document.body.removeChild(blood), 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
